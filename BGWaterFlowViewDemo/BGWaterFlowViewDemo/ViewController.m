@@ -43,7 +43,7 @@ static NSString * const BGCollectionCellIdentify = @"BGCollectionCellIdentify";
     NSString *filePath = [[NSBundle mainBundle] pathForResource:@"pic_url.plist" ofType:nil];
     NSArray *dataArr = [NSArray arrayWithContentsOfFile:filePath];
     NSMutableArray *copyArr = [dataArr mutableCopy];
-    for (NSInteger i = 0; i < 100; i++) {
+    for (NSInteger i = 0; i < BGPageCount; i++) {
         [copyArr addObjectsFromArray:dataArr];
     }
     dataArr = [copyArr copy];
@@ -90,10 +90,6 @@ static NSString * const BGCollectionCellIdentify = @"BGCollectionCellIdentify";
 }
 
 #pragma mark - BGWaterFlowViewDataSource
-- (NSInteger)numberOfSectionsInWaterFlowView:(BGWaterFlowView *)waterFlowView{
-    return 1;
-}
-
 - (NSInteger)waterFlowView:(BGWaterFlowView *)waterFlowView numberOfItemsInSection:(NSInteger)section{
     return self.dataList.count;
 }
@@ -112,7 +108,7 @@ static NSString * const BGCollectionCellIdentify = @"BGCollectionCellIdentify";
     }
     else{
         //保存随机值
-        CGFloat cellHeight = 100 + (rand() % 100);
+        CGFloat cellHeight = 100+(rand() % 100);
         self.cellHeightDic[indexPath] = @(cellHeight);
         return cellHeight;
     }
