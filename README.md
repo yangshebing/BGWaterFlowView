@@ -1,26 +1,26 @@
 # BGWaterFlowView
 一个基于UICollectionView封装的瀑布流控件，自带上下拉刷新功能。简单易用，集成到项目中仅仅只需要三步，轻轻松松分分钟。
 
-##主要功能
+## 主要功能
   - 瀑布流布局
   - 上下拉刷新加载数据
   
-##环境要求
+## 环境要求
   - iOS6.0+    
   - Xcod7.0+
  
-##Installation
-####CocoaPods:
+## Installation
+#### CocoaPods:
 
 ```
  pod "BGWaterFlowView"
 ```  
 
-####手动安装：
+#### 手动安装：
 
 导入"BGWaterFlowView"文件夹至目标工程，由于依赖于EGO和BGUIFoundationKit中的UIView+Extra，请导入这个两个库至目标工程中。
 
-##使用方法：
+## 使用方法：
 
 内部封装了BGWaterFlowView和BGRefreshWaterFlowView两个瀑布流视图。BGRefreshWaterFlowView自带EGO下拉刷新和自定义加载更多，以下就是BGRefreshWaterFlowView使用步骤（如使用BGWaterFlowView详见[使用方法](https://github.com/liuchungui/BGWaterFlowView/blob/master/BGWaterFlowView.md)）。
 
@@ -85,8 +85,8 @@
     NSLog(@"%@", indexPath);
 }
 ```
-##Demo效果截图
+## Demo效果截图
 ![](http://ww1.sinaimg.cn/mw690/7f266405jw1ey22tbuohvg20ab0inqva.gif)
-##协议许可
+## 协议许可
 BGWaterFlowView遵循MIT许可协议。有关详细信息,请参阅许可协议。
 
