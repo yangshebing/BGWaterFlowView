@@ -31,7 +31,6 @@ static NSString * const BGCollectionCellIdentify = @"BGCollectionCellIdentify";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"瀑布流式布局";
-    self.navigationController.navigationBar.translucent = NO;
     self.dataList = [NSMutableArray array];
     self.cellHeightDic = [NSMutableDictionary dictionary];
     [self loadPicturesUrlDataFromPlistFile];

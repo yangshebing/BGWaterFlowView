@@ -10,8 +10,7 @@
 #import "UIImageView+WebCache.h"
 
 @implementation BGCollectionViewCell
-- (id)initWithFrame:(CGRect)frame
-{
+- (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self != nil) {
         [self initSubviews];
@@ -20,28 +19,25 @@
     return self;
 }
 
-- (void)setUrlStr:(NSString *)urlStr{
+- (void)setUrlStr:(NSString *)urlStr {
     _urlStr = urlStr;
     [self setNeedsLayout];
 }
 
-- (void)awakeFromNib
-{
+- (void)awakeFromNib {
     [super awakeFromNib];
     [self initSubviews];
 }
 
-- (void)initSubviews
-{
-    self.picImgView = [[UIImageView alloc] initWithFrame:self.bounds];
+- (void)initSubviews {
+    self.picImgView = [[UIImageView alloc] init];
     self.picImgView.contentMode = UIViewContentModeScaleAspectFill;
     self.picImgView.image = [UIImage imageNamed:@"example.png"];
     self.clipsToBounds = YES;
     [self.contentView addSubview:self.picImgView];
 }
 
-- (void)layoutSubviews
-{
+- (void)layoutSubviews {
     [super layoutSubviews];
     self.picImgView.frame = self.bounds;
     NSURL *url = [NSURL URLWithString:self.urlStr];
