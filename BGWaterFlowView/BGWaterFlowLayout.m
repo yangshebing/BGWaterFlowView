@@ -18,35 +18,40 @@
  *  列的高度
  */
 @property (nonatomic, assign) CGFloat height;
+
 + (instancetype)modelWithColumn:(NSInteger)column;
+
 @end
 
 @implementation BGWaterFlowModel
+
 + (instancetype)modelWithColumn:(NSInteger)column{
     BGWaterFlowModel *model = [[[self class] alloc] init];
     model.column = column;
     model.height = 0.0f;
     return model;
 }
+
 @end
 
 #pragma mark - BGWaterFlowLayout
 
 @interface BGWaterFlowLayout ()
+
 @property (nonatomic, assign) CGFloat itemWidth;
-@property (nonatomic, strong) NSDictionary *cellLayoutInfoDic;
+@property (nonatomic, copy) NSDictionary *cellLayoutInfoDic;
 @property (nonatomic, assign) CGSize contentSize;
 @property (nonatomic, strong) UICollectionViewLayoutAttributes *headerLayoutAttributes;
 @property (nonatomic, strong) UICollectionViewLayoutAttributes *footerLayoutAttributes;
+
 @end
 
 @implementation BGWaterFlowLayout
 #pragma mark - 计算方法
-
 /**
  *  创建列的信息数组，内部是BGWaterFlowModel对象
  */
-- (NSMutableArray *)columnInfoArray{
+- (NSMutableArray *)columnInfoArray {
     NSMutableArray *columnInfoArr = [NSMutableArray array];
     for (NSInteger i = 0; i < self.columnNum; i++) {
         BGWaterFlowModel *model = [BGWaterFlowModel modelWithColumn:i];
@@ -58,7 +63,7 @@
 /**
  * 数组排序，由于每次只有第一个model的高度会发生变化，所以取出第一个model从后面往前面进行比较，直到找到比高度小于等于它的对象为止
  */
-- (void)sortArrayByHeight:(NSMutableArray *)cellLayoutInfoArray{
+- (void)sortArrayByHeight:(NSMutableArray *)cellLayoutInfoArray {
     BGWaterFlowModel *firstModel = cellLayoutInfoArray.firstObject;
     //删除第一个对象
     [cellLayoutInfoArray removeObject:firstModel];
@@ -81,7 +86,7 @@
 }
 
 #pragma mark - 重写父类方法
-- (void)prepareLayout{
+- (void)prepareLayout {
     [super prepareLayout];
     self.headerLayoutAttributes = nil;
     self.footerLayoutAttributes = nil;
@@ -125,14 +130,14 @@
     //内容尺寸
     BGWaterFlowModel *lastModel = columnInfoArray.lastObject;
     //尾部视图
-    if(self.footerHeight > 0){
+    if(self.footerHeight > 0) {
         self.footerLayoutAttributes = [UICollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionFooter withIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
         self.footerLayoutAttributes.frame = CGRectMake(0, lastModel.height+self.headerHeight+self.contentInset.top+self.contentInset.bottom, self.collectionView.frame.size.width, self.footerHeight);
     }
     self.contentSize = CGSizeMake(self.collectionView.frame.size.width, lastModel.height+self.headerHeight+self.contentInset.top+self.contentInset.bottom+self.footerHeight);
 }
 
-- (CGSize)collectionViewContentSize{
+- (CGSize)collectionViewContentSize {
     return self.contentSize;
 }
 
@@ -158,43 +163,43 @@
     return attributesArrs;
 }
 
-- (UICollectionViewLayoutAttributes *)layoutAttributesForSupplementaryViewOfKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath{
+- (UICollectionViewLayoutAttributes *)layoutAttributesForSupplementaryViewOfKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath {
     UICollectionViewLayoutAttributes *attributes = [UICollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:elementKind withIndexPath:indexPath];
     return attributes;
 }
 
 #pragma mark - set method
-- (void)setHorizontalItemSpacing:(CGFloat)horizontalItemSpacing{
+- (void)setHorizontalItemSpacing:(CGFloat)horizontalItemSpacing {
     _horizontalItemSpacing = horizontalItemSpacing;
     [self invalidateLayout];
 }
 
-- (void)setVerticalItemSpacing:(CGFloat)verticalItemSpacing{
+- (void)setVerticalItemSpacing:(CGFloat)verticalItemSpacing {
     _verticalItemSpacing = verticalItemSpacing;
     [self invalidateLayout];
 }
 
-- (void)setItemWidth:(CGFloat)itemWidth{
+- (void)setItemWidth:(CGFloat)itemWidth {
     _itemWidth = itemWidth;
     [self invalidateLayout];
 }
 
-- (void)setColumnNum:(NSUInteger)columnNum{
+- (void)setColumnNum:(NSUInteger)columnNum {
     _columnNum = columnNum;
     [self invalidateLayout];
 }
 
-- (void)setContentInset:(UIEdgeInsets)contentInset{
+- (void)setContentInset:(UIEdgeInsets)contentInset {
     _contentInset = contentInset;
     [self invalidateLayout];
 }
 
-- (void)setHeaderHeight:(CGFloat)headerHeight{
+- (void)setHeaderHeight:(CGFloat)headerHeight {
     _headerHeight = headerHeight;
     [self invalidateLayout];
 }
 
-- (void)setFooterHeight:(CGFloat)footerHeight{
+- (void)setFooterHeight:(CGFloat)footerHeight {
     _footerHeight = footerHeight;
     [self invalidateLayout];
 }

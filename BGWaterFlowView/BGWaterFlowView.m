@@ -19,9 +19,12 @@ static NSString * const BGCollectionRefreshFooterView = @"BGCollectionRefreshFoo
 
 #pragma mark - BGWaterFlowView class
 @interface BGWaterFlowView ()<BGWaterFlowLayoutDelegate, UICollectionViewDataSource>
+
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) BGWaterFlowLayout *waterFlowLayout;
+
 @end
+
 @implementation BGWaterFlowView
 - (instancetype)initWithFrame:(CGRect)frame{
     if(self = [super initWithFrame:frame]){
@@ -31,10 +34,11 @@ static NSString * const BGCollectionRefreshFooterView = @"BGCollectionRefreshFoo
 }
 
 - (void)awakeFromNib{
+    [super awakeFromNib];
     [self initViews];
 }
 
-- (void)initViews{
+- (void)initViews {
     BGWaterFlowLayout *waterFlowLayout = [[BGWaterFlowLayout alloc] init];
     waterFlowLayout.columnNum = 4;
     waterFlowLayout.horizontalItemSpacing = 15;
@@ -50,6 +54,9 @@ static NSString * const BGCollectionRefreshFooterView = @"BGCollectionRefreshFoo
     collectionView.backgroundColor = [UIColor whiteColor];
     [self addSubview:collectionView];
     
+    if (@available(iOS 11, *)) {
+        collectionView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+    }
     self.waterFlowLayout = waterFlowLayout;
     self.collectionView = collectionView;
 }
@@ -60,75 +67,68 @@ static NSString * const BGCollectionRefreshFooterView = @"BGCollectionRefreshFoo
 }
 
 #pragma mark - UICollectionView的公共方法
-- (void)registerClass:(Class)cellClass forCellWithReuseIdentifier:(NSString *)identifier{
+- (void)registerClass:(Class)cellClass forCellWithReuseIdentifier:(NSString *)identifier {
     [self.collectionView registerClass:cellClass forCellWithReuseIdentifier:identifier];
 }
 
-- (void)registerNib:(UINib *)nib forCellWithReuseIdentifier:(NSString *)identifier{
+- (void)registerNib:(UINib *)nib forCellWithReuseIdentifier:(NSString *)identifier {
     [self.collectionView registerNib:nib forCellWithReuseIdentifier:identifier];
 }
 
-- (__kindof UICollectionViewCell *)dequeueReusableCellWithReuseIdentifier:(NSString *)identifier forIndexPath:(NSIndexPath *)indexPath{
+- (__kindof UICollectionViewCell *)dequeueReusableCellWithReuseIdentifier:(NSString *)identifier forIndexPath:(NSIndexPath *)indexPath {
     return [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
 }
 
-- (void)reloadData{
+- (void)reloadData {
     [self.collectionView reloadData];
 }
 
-- (void)setColumnNum:(NSInteger)columnNum{
+- (void)setColumnNum:(NSInteger)columnNum {
     _columnNum = columnNum;
     self.waterFlowLayout.columnNum = columnNum;
 }
 
-- (void)setHorizontalItemSpacing:(CGFloat)horizontalItemSpacing{
+- (void)setHorizontalItemSpacing:(CGFloat)horizontalItemSpacing {
     self.waterFlowLayout.horizontalItemSpacing = horizontalItemSpacing;
 }
 
-- (void)setVerticalItemSpacing:(CGFloat)verticalItemSpacing{
+- (void)setVerticalItemSpacing:(CGFloat)verticalItemSpacing {
     self.waterFlowLayout.verticalItemSpacing = verticalItemSpacing;
 }
 
-- (void)setContentInset:(UIEdgeInsets)contentInset{
+- (void)setContentInset:(UIEdgeInsets)contentInset {
     _contentInset = contentInset;
     self.waterFlowLayout.contentInset = contentInset;
 }
 
 #pragma mark - UICollectionViewDataSource
-- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
     return 1;
 }
 
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     return [self.dataSource waterFlowView:self numberOfItemsInSection:section];
 }
 
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     return [self.dataSource waterFlowView:self cellForItemAtIndexPath:indexPath];
 }
 
 #pragma mark - BGWaterFlowLayoutDelegate method
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-    if([self.delegate respondsToSelector:@selector(waterFlowView:didSelectItemAtIndexPath:)]){
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    if([self.delegate respondsToSelector:@selector(waterFlowView:didSelectItemAtIndexPath:)]) {
         [self.delegate waterFlowView:self didSelectItemAtIndexPath:indexPath];
     }
 }
 
-- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(BGWaterFlowLayout *)layout heightForItemAtIndexPath:(NSIndexPath *)indexPath{
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(BGWaterFlowLayout *)layout heightForItemAtIndexPath:(NSIndexPath *)indexPath {
     return [self.dataSource waterFlowView:self heightForItemAtIndexPath:indexPath];
 }
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
-}
-*/
 
 @end
 
 #pragma mark - BGRefreshWaterFlowView class
-@interface BGRefreshWaterFlowView()<EGORefreshTableHeaderDelegate>{
+@interface BGRefreshWaterFlowView() <EGORefreshTableHeaderDelegate> {
     EGORefreshTableHeaderView *_refreshTableHeaderView;
     BOOL _reloading;
     UIButton *_loadMoreButton;
@@ -137,12 +137,12 @@ static NSString * const BGCollectionRefreshFooterView = @"BGCollectionRefreshFoo
 }
 
 @end
+
 @implementation BGRefreshWaterFlowView
 - (void)initViews {
     [super initViews];
     BGWaterFlowLayout *waterFlowLayout = (BGWaterFlowLayout *)self.collectionView.collectionViewLayout;
     waterFlowLayout.headerHeight = 1.0f;
-//    waterFlowLayout.headerHeight = 10;
     waterFlowLayout.footerHeight = 60;
     self.isLoadMore = YES;
     //注册头部、尾部
@@ -202,7 +202,7 @@ static NSString * const BGCollectionRefreshFooterView = @"BGCollectionRefreshFoo
     [self loadMoreDataLoadingUI];
     
     id<BGRefreshWaterFlowViewDelegate> delegate = (id<BGRefreshWaterFlowViewDelegate>)self.delegate;
-    if([delegate respondsToSelector:@selector(pullUpWithRefreshWaterFlowView:)]){
+    if([delegate respondsToSelector:@selector(pullUpWithRefreshWaterFlowView:)]) {
         [delegate pullUpWithRefreshWaterFlowView:self];
     }
 }
@@ -223,8 +223,7 @@ static NSString * const BGCollectionRefreshFooterView = @"BGCollectionRefreshFoo
     }
 }
 
-- (void)resetPullUpShowDescriptionString:(NSString *)str
-{
+- (void)resetPullUpShowDescriptionString:(NSString *)str {
     _loadMoreButton.hidden = NO;
     _loadMoreButton.enabled = YES;
     _showHintDescLabel.text = str;
@@ -235,7 +234,7 @@ static NSString * const BGCollectionRefreshFooterView = @"BGCollectionRefreshFoo
 #pragma mark - EGORefreshTableHeaderDelegate Methods
 - (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view {
     id<BGRefreshWaterFlowViewDelegate> delegate = (id<BGRefreshWaterFlowViewDelegate>)self.delegate;
-    if([delegate respondsToSelector:@selector(pullDownWithRefreshWaterFlowView:)]){
+    if([delegate respondsToSelector:@selector(pullDownWithRefreshWaterFlowView:)]) {
         [delegate pullDownWithRefreshWaterFlowView:self];
     }
 }
